@@ -24,20 +24,6 @@ jobs:
           echo "=== DEBUG: includeIf credentials ==="
           git config --show-origin --get-regexp 'includeIf\.gitdir:.*\.path' || true
 
-      - name: Cleanup checkout credentials (includeIf)
-        run: |
-            echo "=== DEBUG: before cleanup ==="
-            git config --show-origin --get-regexp 'includeIf\.gitdir:.*\.path' || true
-
-            # kill all includeIf entries that point to git-credentials-*
-            git config --local --remove-section 'includeIf "gitdir:/home/runner/work/ghp-deploy-repro-source/ghp-deploy-repro-source/.git"' || true
-            git config --local --remove-section 'includeIf "gitdir:/home/runner/work/ghp-deploy-repro-source/ghp-deploy-repro-source/.git/worktrees/*"' || true
-            git config --local --remove-section 'includeIf "gitdir:/github/workspace/.git"' || true
-            git config --local --remove-section 'includeIf "gitdir:/github/workspace/.git/worktrees/*"' || true
-
-            echo "=== DEBUG: after cleanup ==="
-            git config --show-origin --get-regexp 'includeIf\.gitdir:.*\.path' || true
-
       - name: Deploy via github-pages-deploy-action
         uses: JamesIves/github-pages-deploy-action@v4
         with:
