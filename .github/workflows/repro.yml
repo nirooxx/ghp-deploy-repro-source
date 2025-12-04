@@ -27,7 +27,7 @@ jobs:
       - name: Deploy via github-pages-deploy-action
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          branch: gh-pages
+          branch: main
           folder: dist
           repository-name: nirooxx/ghp-deploy-repro-target
           token: ${{ secrets.CROSS_REPO_PAT }}
