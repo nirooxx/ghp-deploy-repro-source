@@ -1,0 +1,33 @@
+name: repro-gh-pages-deploy
+
+on:
+  push:
+    branches: [ main ]
+
+jobs:
+  repro:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v6   # Important: Version with includeIf
+
+      - name: Create dummy site
+        run: |
+          mkdir -p dist
+          echo "<h1>Hello from repro</h1>" > dist/index.html
+
+      - name: Debug git config
+        run: |
+          echo "=== DEBUG: .git/config ==="
+          cat .git/config
+          echo "=== DEBUG: includeIf credentials ==="
+          git config --show-origin --get-regexp 'includeIf\.gitdir:.*\.path' || true
+
+      - name: Deploy via github-pages-deploy-action
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          branch: gh-pages
+          folder: dist
+          repository-name: nirooxx/ghp-deploy-repro-target
+          token: ${{ secrets.CROSS_REPO_PAT }}
